@@ -48,15 +48,15 @@ function TemperatureAndDetails() {
         </p>
         <UilSunset />
         <p className='font-light'
-        >Sunset: <span className='font-medium ml-1'>05:50 AM</span> 
+        >Sunset: <span className='font-medium ml-1'>05:50 PM</span> 
         </p>
         <UilArrowUp />
         <p className='font-light'
-        >High: <span className='font-medium ml-1'>05:50 AM</span> 
+        >High: <span className='font-medium ml-1'>44°</span> 
         </p>
         <UilArrowDown/>
         <p className='font-light'
-        >Low: <span className='font-medium ml-1'>05:50 AM</span> 
+        >Low: <span className='font-medium ml-1'>30°</span> 
         </p>
     </div>
 
@@ -70,4 +70,4 @@ function TemperatureAndDetails() {
   );
 };
 
-export default TemperatureAndDetails
+export default TemperatureAndDetails;
