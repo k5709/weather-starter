@@ -11,7 +11,7 @@ function TimeAndLocation() {
 
         <div className='flex items-center justify-center my-3'>
             <p className='text-white text-xl font-medium'>
-                Plainfield, Illinois
+                Chicago, Illinois
             </p>
         </div>
     </div>
