@@ -6,14 +6,25 @@ import TimeAndLocation from "./components/TimeAndLocation";
 import TemperatureAndDetails from "./components/TemperatureAndDetails";
 import Forecast from "./components/Forecast";
 import getFormattedWeatherData from "./weather/weatherService";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [query, setQuery] = useState({ q: "Chicago" });
+  const [units, setUnits] = useState("metric");
+  const [weather, setWeather] = useState(null);
+
   const fetchWeather = async () => {
-    const data = await getFormattedWeatherData({ q: "Chicago" });
+    const data = await getFormattedWeatherData({ ...query, units }).then(
+      (data) => {
+        setWeather(data);
+      }
+    );
     console.log(data);
   };
 
-  fetchWeather();
+  useEffect(() => {
+    fetchWeather();
+  }, [query, units]);
 
   return (
     <div
@@ -23,11 +34,15 @@ function App() {
       <TopButtons />
       <Inputs />
 
-      <TimeAndLocation />
-      <TemperatureAndDetails />
+      {weather && (
+        <>
+          <TimeAndLocation weather={weather} />
+          <TemperatureAndDetails weather={weather} />
 
-      <Forecast title="Hourly Forecast" />
-      <Forecast title="Daily Forecast" />
+          <Forecast title="Hourly Forecast" data={weather.hourly} />
+          <Forecast title="Daily Forecast" data={weather.daily} />
+        </>
+      )}
     </div>
   );
 }

@@ -1,17 +1,18 @@
 import React from 'react'
 
-function TimeAndLocation() {
+function TimeAndLocation({weather: {formattedLocalTime, name, country}}) {
   return (
     <div>
         <div className='flex items-center justify-center my-6'>
             <p className='text-white text-xl font-extralight'>
-                Tuesday, 6 Februrary 2024 | Local time: 1:26 PM
+                
+                {formattedLocalTime}
             </p>
         </div>
 
         <div className='flex items-center justify-center my-3'>
             <p className='text-white text-xl font-medium'>
-                Chicago, Illinois
+                {`${name}, ${country}`}
             </p>
         </div>
     </div>

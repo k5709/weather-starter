@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Forecast({title}) {
+function Forecast({title, data}) {
   return (
     <div>
         {/* Hourly Forecast Header. */}
@@ -17,7 +17,7 @@ function Forecast({title}) {
                 alt=""
                 className='w-12 my-1'
                 />
-                <p>21°</p>
+                <p>56°</p>
             </div>
 
             <div className='flex flex-col items-center jusitfy-between'>
