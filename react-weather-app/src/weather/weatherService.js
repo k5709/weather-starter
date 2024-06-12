@@ -1,23 +1,9 @@
 import { DateTime } from "luxon";
 const API_KEY = "9c6423df83578665e7f7f9da70cdc6ed";
+// const API_KEY =
+//   "6d805f4eff5cc53d8799fe3e555ebbf2" || "8e5820f9273148618bd15f6cbf5c9e9c";
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
-// const getWeatherData = async (infoType, searchParams) => {
-//   const url = new URL(BASE_URL + "/" + infoType);
-//   url.search = new URLSearchParams({ ...searchParams, appId: API_KEY });
-
-//   try {
-//     const res = await fetch(url);
-//     if (!res.ok) {
-//       throw new Error("Network response was not ok");
-//     }
-//     const data = await res.json();
-//     return data;
-//   } catch (error) {
-//     console.error("There was a problem with the fetch operation:", error);
-//   }
-// };
-//
 const getWeatherData = (infoType, searchParams) => {
   const url = new URL(BASE_URL + "/" + infoType);
   url.search = new URLSearchParams({ ...searchParams, appid: API_KEY });
@@ -26,8 +12,7 @@ const getWeatherData = (infoType, searchParams) => {
   return fetch(url).then((res) => res.json());
 };
 //
-const iconUrlFromCode = (icon) =>
-  `http://openweathermap.org/img/wn/${icon}01d@2x.png`;
+const iconUrlFromCode = (icon) => `http://openweathermap.org/img/wn/${icon}@2x.png`;
 //
 const formatToLocalTime = (
   secs,
@@ -111,7 +96,7 @@ const getFormattedWeatherData = async (searchParams) => {
     units: searchParams.units,
   }).then((d) => formatForecastWeather(dt, timezone, d.list));
 
-  return { ...formattedCurrentWeather, formattedForecastWeather };
+  return { ...formattedCurrentWeather, ...formattedForecastWeather };
 };
 
 export default getFormattedWeatherData;

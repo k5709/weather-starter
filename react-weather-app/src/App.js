@@ -6,45 +6,47 @@ import TimeAndLocation from "./components/TimeAndLocation";
 import TemperatureAndDetails from "./components/TemperatureAndDetails";
 import Forecast from "./components/Forecast";
 import getFormattedWeatherData from "./weather/weatherService";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-function App() {
-  const [query, setQuery] = useState({ q: "Chicago" });
-  const [units, setUnits] = useState("metric");
+const App = () => {
+  const [query, setQuery] = useState({ q: "Illinois" });
+  const [units, setUnits] = useState("imperial");
   const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const fetchWeather = async () => {
-    const data = await getFormattedWeatherData({ ...query, units }).then(
-      (data) => {
-        setWeather(data);
-      }
-    );
-    console.log(data);
-  };
+  const getWeather = (async () => {
+    const data = await getFormattedWeatherData({ ...query, units });
+    setWeather(data);
+    setLoading(false);
+    console.log("data received in app.js", data);
+  });
 
   useEffect(() => {
-    fetchWeather();
+    getWeather();
   }, [query, units]);
 
+  // getWeather();
+
   return (
-    <div
-      className="mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-br from-cyan-700 to-blue-700 h-fit shadow-xl
-     shadow-gray-400"
-    >
-      <TopButtons />
-      <Inputs />
+    <div className="mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-br from-cyan-700 to-blue-700 h-fit shadow-xl shadow-gray-400">
+      <TopButtons setQuery={setQuery} />
+      <Inputs setUnits={setUnits} />
 
-      {weather && (
-        <>
-          <TimeAndLocation weather={weather} />
-          <TemperatureAndDetails weather={weather} />
-
-          <Forecast title="Hourly Forecast" data={weather.hourly} />
-          <Forecast title="Daily Forecast" data={weather.daily} />
-        </>
+      {loading ? (
+        <div>Loading...</div>
+      ) : weather ? ((
+          <>
+            <TimeAndLocation weather={weather} />
+            <TemperatureAndDetails weather={weather} />
+            <Forecast title="Hourly Forecast" data={weather.hourly} />
+            <Forecast title="Daily Forecast" data={weather.daily} />
+          </>
+        )
+      ) : (
+        <div>No weather data available</div>
       )}
     </div>
   );
-}
+};
 
 export default App;
