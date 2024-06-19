@@ -6,7 +6,7 @@ import TimeAndLocation from "./components/TimeAndLocation";
 import TemperatureAndDetails from "./components/TemperatureAndDetails";
 import Forecast from "./components/Forecast";
 import getFormattedWeatherData from "./weather/weatherService";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 const App = () => {
   const [query, setQuery] = useState({ q: "Illinois" });

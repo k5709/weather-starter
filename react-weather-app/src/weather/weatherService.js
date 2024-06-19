@@ -1,18 +1,18 @@
 import { DateTime } from "luxon";
-const API_KEY = "9c6423df83578665e7f7f9da70cdc6ed";
-// const API_KEY =
-//   "6d805f4eff5cc53d8799fe3e555ebbf2" || "8e5820f9273148618bd15f6cbf5c9e9c";
+// const API_KEY = "9c6423df83578665e7f7f9da70cdc6ed";
+const API_KEY =
+  process.env.REACT_APP_API_KEY1 || process.env.REACT_APP_API_KEY2;
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 const getWeatherData = (infoType, searchParams) => {
   const url = new URL(BASE_URL + "/" + infoType);
   url.search = new URLSearchParams({ ...searchParams, appid: API_KEY });
-
   console.log(url);
   return fetch(url).then((res) => res.json());
 };
 //
-const iconUrlFromCode = (icon) => `http://openweathermap.org/img/wn/${icon}@2x.png`;
+const iconUrlFromCode = (icon) =>
+  `http://openweathermap.org/img/wn/${icon}@2x.png`;
 //
 const formatToLocalTime = (
   secs,
