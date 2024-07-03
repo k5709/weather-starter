@@ -1,12 +1,20 @@
 import { DateTime } from "luxon";
-// const API_KEY = "9c6423df83578665e7f7f9da70cdc6ed";
 const API_KEY =
   process.env.REACT_APP_API_KEY1 || process.env.REACT_APP_API_KEY2;
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
+const OVERVIEW_URL =
+  "https://api.openweathermap.org/data/3.0/onecall/overview?";
 
 const getWeatherData = (infoType, searchParams) => {
   const url = new URL(BASE_URL + "/" + infoType);
   url.search = new URLSearchParams({ ...searchParams, appid: API_KEY });
+  console.log(url);
+  return fetch(url).then((res) => res.json());
+};
+//
+const getWeatherOverview = (lat, lon) => {
+  const url = new URL(OVERVIEW_URL);
+  url.search = new URLSearchParams({ lat, lon, appid: API_KEY });
   console.log(url);
   return fetch(url).then((res) => res.json());
 };
@@ -47,6 +55,7 @@ const formatCurrent = (data) => {
     dt,
     timezone,
     country,
+    weather_overview: weather.weather_overview,
     sunrise: formatToLocalTime(sunrise, timezone, "hh:mm a"),
     sunset: formatToLocalTime(sunset, timezone, "hh:mm a"),
     details,
@@ -86,7 +95,15 @@ const getFormattedWeatherData = async (searchParams) => {
   const formattedCurrentWeather = await getWeatherData(
     "weather",
     searchParams
-  ).then(formatCurrent);
+  ).then(async (currentData) => {
+    const overviewData = await getWeatherOverview(
+      currentData.coord.lat,
+      currentData.coord.lon
+    );
+    return formatCurrent(currentData, overviewData);
+  });
+
+  // https://api.openweathermap.org/data/2.5/forecast?lat=40.0003&lon=-89.2504&units=imperial&appid=9c6423df83578665e7f7f9da70cdc6ed
 
   const { dt, lat, lon, timezone } = formattedCurrentWeather;
 

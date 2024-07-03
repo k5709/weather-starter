@@ -14,15 +14,26 @@ const App = () => {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const getWeather = async () => {
-    const data = await getFormattedWeatherData({ ...query, units });
-    setWeather(data);
-    setLoading(false);
-    console.log("data received in app.js", data);
-  };
+  // const getWeather = async () => {
+  //   const data = await getFormattedWeatherData({ ...query, units });
+  //   setWeather(data);
+  //   setLoading(false);
+  //   console.log(data);
+  // };
+
+  // useEffect(() => {
+  //   getWeather();
+  // }, [query, units]);
 
   useEffect(() => {
-    getWeather();
+    const fetchWeather = async () => {
+      const data = await getFormattedWeatherData({ ...query, units });
+      setWeather(data);
+      setLoading(false);
+      console.log("data received in WeatherDisplay", data);
+    };
+
+    fetchWeather();
   }, [query, units]);
 
   const formatBackground = () => {
@@ -47,6 +58,16 @@ const App = () => {
           <TemperatureAndDetails weather={weather} />
           <Forecast title="Hourly Forecast" data={weather.hourly} />
           <Forecast title="Daily Forecast" data={weather.daily} />
+          <div
+            className="weather-overview"
+            role="region"
+            aria-labelledby="weather-overview-heading"
+          >
+            <h2 id="weather-overview-heading" className="sr-only">
+              Weather Overview
+            </h2>
+            <p className="text-white font-medium">{weather.weather_overview}</p>
+          </div>
         </>
       ) : (
         <div>No weather data available</div>
